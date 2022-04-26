@@ -1,108 +1,98 @@
 //Idea: store a pointer to dynamically allocated array and replace it with a newly-allocated array as needed.
 export class Vector {
-    arr: number[] | null[] = new Array(10).fill(null);
-    arr_capacity: number = 10;
-    arr_size: number = 0;
+    arr: number[] | null[];
+    arr_capacity: number = 12;
+    arr_size: number = 0; 
 
-    constructor(){}
+    constructor(arrSize: number = 12){
+        this.arr = new Array(arrSize).fill(null);
+        this.arr_capacity = arrSize;
+    }
 
     //number of items, default = 0
-    size(){
+    size(): number {
         return this.arr_size;
     }
 
-    //number of items it can hold, default = 10
-    capacity(){
+    //number of items it can hold, default = 12
+    capacity(): number {
         return this.arr_capacity;
     }
 
-    isEmpty(){
+    //checks if our arr contains at least 1 value 
+    isEmpty(): boolean {
         return this.arr_size === 0 ? true : false;
     }
 
     //returns item at given index, blows up if index out of bounds
-    at(index: number){
+    at(index: number): number | void | null {
         if(index < 0 || index >= this.arr_capacity)
             return console.log('out of range!'); //throw new RangeError('index out of range.')
 
         return this.arr[index];
     }
 
-    push(item: number){
-        if(this.arr_size === this.arr_capacity)
-            this.resize(this.arr_capacity * 2);
-        
+    //appends an item to the end of our array
+    push(item: number): void {
+        this.checkMaxCapacity();
         this.arr[this.arr_size] = item;
         this.arr_size++;
     }
     
-    //inserts item at index, shifts that index's value and trailing elements to the right
-    insert(value: number, index: number){
+    //inserts item at index and shifts that index's value and trailing elements to the right
+    insert(value: number, index: number): void {
         if(index < 0 || index >= this.arr_capacity)
             return console.log('out of range!');
 
-        if(this.arr_size === this.arr_capacity)
-            this.resize(this.arr_capacity * 2);
+        this.checkMaxCapacity();
         
-        if(this.arr[index] === null){
-            this.arr[index] = value;
-
-        } else {
-            for(let j = this.arr_size - 1 ; j >= index; j--){
-                if(j === index){
-                    this.arr[j + 1] = this.arr[j];
-                    this.arr[j] = value;
-                } else {
-                    this.arr[j + 1] = this.arr[j];
-                }
-            }
-        }
+        for(let j = this.arr_size - 1 ; j >= index; j--)
+            this.arr[j + 1] = this.arr[j];
         
+        this.arr[index] = value;
         this.arr_size++;
     }
 
-    prepend(item: number){
+    //inserts item at first index and shifts that index's value and trailing elements to the right
+    prepend(item: number): void {
         this.insert(item, 0);
     }
 
-    //remove from end, return value
-    pop(){
+    //remove item from end and return value
+    pop(): number | null {
         if(this.isEmpty())
-            return console.log('empty vector');
+            return null;
 
         let temp = this.arr[this.arr_size - 1];
         this.arr[this.arr_size - 1] = null;
         this.arr_size--;
+        this.checkMinCapacity();
 
         return temp;
     }
 
     //delete item at index, shifting all trailing elements left
-    delete(index: number){
+    delete(index: number): void {
         if(index < 0 || index >= this.arr_capacity)
             return console.log('out of range!');
 
         if (this.arr[index] === null)
             return console.log(`no item exists at index ${index}.`);
 
-        for(let j = index; j <= this.arr_size - 1; j++){
-            if(this.arr[j + 1] === undefined){
-                this.arr[j] = null;
-            } else {
-                this.arr[j] = this.arr[j + 1];
-            }
-        }
+        for(let j = index; j < this.arr_size; j++)
+            this.arr[j] = this.arr[j + 1];
 
+        this.arr[this.arr_size - 1] = null;
         this.arr_size--;
     }
 
     //looks for value and removes index holding it (even if in multiple places)
-    //changes size/capacity of array
+    //changes size/capacity of array, returns -1 if value not found
     //todo: implement remove method
     remove(value: number){}
 
     //looks for value and returns first index with that value, -1 if not found
-    find(value: number){
+    find(value: number): number {
         for(let i = 0; i < this.arr_size; i++){
             if(this.arr[i] === value){
                 return i;
@@ -112,9 +102,8 @@ export class Vector {
         return -1;
     }
     
-    //when you reach capacity, resize to double the size
-    //todo: when popping an item, if size is 1/4 of capacity, resize to half
-    private resize(capacity: number){
+    //when you reach min/max capacity, resize to half/double the size
+    private resize(capacity: number): void {
         let newArr = new Array(capacity).fill(null);
 
         for(let i = 0; i <= this.arr_size; i++)
@@ -122,5 +111,20 @@ export class Vector {
         
         this.arr = newArr;
         this.arr_capacity = capacity;
+    }
+    
+    //if array size is at full capacity, double the size
+    private checkMaxCapacity(): void {
+        if(this.arr_size === this.arr_capacity)
+            this.resize(this.arr_capacity * 2);
+
+    }
+
+    //if array size is 1/4 of capacity, resize to half
+    private checkMinCapacity(): void {
+        let allocationPercent = parseFloat((this.arr_size / this.arr_capacity).toFixed(2));
+        if(allocationPercent < 0.25)
+            this.resize(Math.floor(this.arr_capacity / 2));
+        
     }
 };
