@@ -95,6 +95,7 @@ export class Vector {
             if(this.arr[i] === value){
                 for(let j = i + 1; j < this.arr_size; j++){
                     this.arr[j - 1] = this.arr[j];
+                    this.arr[j] = null;
                 }
 
                 size_cap_change++;
