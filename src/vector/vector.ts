@@ -87,9 +87,25 @@ export class Vector {
     }
 
     //looks for value and removes index holding it (even if in multiple places)
-    //changes size/capacity of array, returns -1 if value not found
-    //todo: implement remove method
-    remove(value: number){}
+    //changes size/capacity of array
+    remove(value: number): void {
+        let size_cap_change = 0;
+
+        for(let i = 0; i < this.arr_size; i++){
+            if(this.arr[i] === value){
+                for(let j = i + 1; j < this.arr_size; j++){
+                    this.arr[j - 1] = this.arr[j];
+                }
+
+                size_cap_change++;
+            } 
+        }
+
+        if(size_cap_change > 0) {
+            this.arr_size = this.arr_size - size_cap_change;
+            this.resize(this.arr_capacity - size_cap_change)
+        }
+    }
 
     //looks for value and returns first index with that value, -1 if not found
     find(value: number): number {
