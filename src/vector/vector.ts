@@ -1,8 +1,8 @@
 //Idea: store a pointer to dynamically allocated array and replace it with a newly-allocated array as needed.
 export class Vector {
-    arr: number[] | null[];
-    arr_capacity: number = 12;
-    arr_size: number = 0; 
+    protected arr: number[] | null[];
+    protected arr_capacity: number = 12;
+    protected arr_size: number = 0; 
 
     constructor(arrSize: number = 12){
         this.arr = new Array(arrSize).fill(null);
