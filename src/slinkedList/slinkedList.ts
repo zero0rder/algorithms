@@ -31,10 +31,11 @@ export class List {
         let currNode = this.head;
         let nodeIndex = 0;
 
-        //check if index is out-of-bounds (see below logic first)
+        if(index < 0 || index > this.list_size)
+            return console.log('out of bounds');
 
         //start at head & traverse down
-        while(currNode?.next_ptr){
+        while(currNode){
             if(nodeIndex === index)
                 return currNode.data;
             
@@ -77,11 +78,18 @@ export class List {
         let newNode = new ListNode(value);
         let currNode = this.head;
         
-        //iterate until next_ptr == null (tail)
-        while(currNode?.next_ptr)
-            currNode = currNode.next_ptr;
+        if(currNode === null){
+            this.head = newNode;
+            this.list_size++;
+            return;
+        }
 
-        //currNode is currently at the tail node w ptr == null
+        //iterate until next_ptr == null (tail)
+        while(currNode?.next_ptr){
+            currNode = currNode.next_ptr;
+        }
+
+        //currNode is currently at the tail node
         if(currNode)
             currNode.next_ptr = newNode;
 
@@ -108,7 +116,6 @@ export class List {
         this.list_size--;
 
         return prev_tail;
-
     }
 
     // - get value of front item
@@ -164,10 +171,9 @@ export class List {
         }
 
         return;
-
     }
 
-    // - removes node at given index
+    // - removes node at given index and returns node
     erase(index: number){
         let currNode = this.head;
 
