@@ -1,10 +1,10 @@
 type NodePtr = ListNode | null;
 
 export class ListNode {
-    data: number = 0;
+    data: number
     next_ptr: NodePtr = null;
 
-    constructor(data: number){
+    constructor(data: number = 0){
         this.data = data;
     }
 }
