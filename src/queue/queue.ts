@@ -55,6 +55,7 @@ export class LinkedListQueue {
     
 }
 
+//todo: add buffer support for pointers
 export class FixedArrayQueue {
     queue: number[] | null[];
     read: number = 0; //dequeue pointer
