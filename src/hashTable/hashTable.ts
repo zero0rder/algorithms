@@ -1,9 +1,14 @@
+type HashNode = {
+    key: string;
+    value: number | null;
+}
+
 export class HashTable {
-    table: (string|number)[][];
+    table: HashNode[];
     table_size: number = 0;
 
     constructor(capacity: number = 8) {
-        this.table = new Array(capacity).fill(['<empty>']);
+        this.table = new Array(capacity).fill({ key: '<empty>', value: null });
     }
 
     // - k=key
@@ -20,20 +25,19 @@ export class HashTable {
 
     // - add value to hash table
     // - linear probing for collision protection
-    set(key: string, val: number){
+    set(key: string, value: number){
         let index = this.hash(key);
-        let flag = this.table[index][0] !== '<empty>' && this.table[index][0] !== '<tombstone>';
 
         //if pair already exists at this index look at the next
-        if(flag){
-            while(this.table[index][0] !== '<empty>' && this.table[index][0] !== '<tombstone>'){
+        if(this.table[index].key !== '<empty>' && this.table[index].key !== '<tombstone>'){
+            while(this.table[index].key !== '<empty>' && this.table[index].key !== '<tombstone>'){
                 index++;
             }
 
-            this.table[index] = [key, val];
+            this.table[index] = {key, value};
 
         } else {
-            this.table[index] = [key, val];
+            this.table[index] = {key, value};
         }
 
         this.table_size++
@@ -42,32 +46,31 @@ export class HashTable {
 
     // - check if a specific key exists
     exists(key: string){
-        let index = this.hash(key);
-        return this.table[index][0] !== '<empty>' && this.table[index][0] !== '<tombstone>';
+        let target = this.hash(key);
+        return this.table[target].key !== '<empty>' && this.table[target].key !== '<tombstone>';
     }
 
     // - retrieve a value from a specific key
     get(key: string){
         let index = this.hash(key);
-        let flag = this.table[index][0] !== '<empty>' && this.table[index][0] !== '<tombstone>';
 
-        if(this.table[index][0] !== key){
-            while(flag){
+        if(this.table[index].key !== key){
+            while(this.table[index].key !== '<empty>' && this.table[index].key !== '<tombstone>'){
                 index++;
             }
 
             //todo: need ptr to visit every slot guaranteed
-            if(index === undefined)
+            if(this.table[index] === undefined)
                 return 'not available';
         }
 
-        return this.table[index][1];
+        return this.table[index].value;
     }
 
     // - remove key/value pair from the table
     remove(key: string){
         let index = this.hash(key);
-        this.table[index] = ['<tombstone>'];
+        this.table[index] = { key: '<tombstone>', value: null };
         this.table_size--;
     }
     
@@ -80,11 +83,11 @@ export class HashTable {
     }
 
     private resizeTable(size: number){
-        let temp = new Array(size).fill(['<empty>']);
-        
+        let temp = new Array(size).fill({ key: '<empty>', value: null });
+
         //todo: some keys don't exist() or get() values
         for(let i = 0; i <= this.table.length - 1; i++){
-            if(this.table[i][0] !== '<empty>' && this.table[i][0] !== '<tombstone>')
+            if(this.table[i].key !== '<empty>' && this.table[i].key !== '<tombstone>')
                 temp[i] = this.table[i];
             
         }
