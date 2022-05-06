@@ -81,9 +81,9 @@ export class HashTable {
 
     private resizeTable(size: number){
         let temp = new Array(size).fill(['<empty>']);
-
+        //todo: some pairs don't exist() or get() values
         for(let i = 0; i <= this.table.length - 1; i++){
-            if(this.table[i][0] !== '<empty>'){
+            if(this.table[i][0] !== '<empty>' && this.table[i][0] !== '<tombstone>'){
                let newHash = this.hash(this.table[i][0].toString());
                temp[newHash] = this.table[i];
             }
