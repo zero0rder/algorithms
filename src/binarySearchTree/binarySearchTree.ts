@@ -1,7 +1,9 @@
+type BSTNodeType = BSTnode | null;
+
 export class BSTnode {
     data: number;
-    leftNode: BSTnode | null = null;
-    rightNode: BSTnode | null = null;
+    leftNode: BSTNodeType = null;
+    rightNode: BSTNodeType = null;
 
     constructor(data: number){
         this.data = data;
@@ -12,13 +14,13 @@ export class BSTnode {
  * BINARY SEARCH TREE
  */
 export class BinarySearchTree {
-    root: BSTnode | null = null;
+    root: BSTNodeType = null;
     nodeCount: number = 0;
 
     constructor() {}
 
     // - insert node into tree
-    insert(value: number, rootNode: BSTnode | null = this.root): BSTnode {
+    insert(value: number, rootNode: BSTNodeType = this.root): BSTnode {
         let newNode = new BSTnode(value);
         
         if(rootNode === null){
@@ -49,25 +51,24 @@ export class BinarySearchTree {
     }
 
     // - prints values from min to max (Inorder Traversal)
-    printValues(root: BSTnode | null = this.root){
-
-        if(root === null){
+    printValues(root: BSTNodeType = this.root){
+        if(root === null)
             return;
-        }
 
         this.printValues(root.leftNode);
         console.log(root.data);
         this.printValues(root.rightNode);
-        
+
     }
 
     deleteTree(){
         this.root = null;
         return this.nodeCount = 0;
+
     }
 
     // - returns true if given value exists in the tree
-    isInTree(value: number, root: BSTnode | null = this.root): boolean {
+    isInTree(value: number, root: BSTNodeType = this.root): boolean {
         if(root === null)
             return false;
 
@@ -84,29 +85,46 @@ export class BinarySearchTree {
     }
 
     // - returns the height in nodes (single node's height is 1)
-    getHeight(root: BSTnode | null = this.root): number {
+    getHeight(root: BSTNodeType = this.root): number {
         if(root === null)
-            return -1;
+            return 0;
 
         let leftHeight = this.getHeight(root.leftNode);
         let rightHeight = this.getHeight(root.rightNode);
-        console.log(leftHeight, rightHeight)
+
         return Math.max(leftHeight, rightHeight) + 1;
 
     }
 
     // - returns the minimum value stored in the tree
-    getMin(){
+    getMin(root: BSTNodeType = this.root): number | null {
+        if(root === null)
+            return null;
+        
+        if(root.leftNode !== null)
+           return this.getMin(root.leftNode);
+        
+        return root.data;
 
     }
 
     // - returns the maximum value stored in the tree
-    getMax(){
+    getMax(root: BSTNodeType = this.root): number | null {
+        if(root === null)
+            return null;
+
+        if(root.rightNode !== null)
+            return this.getMax(root.rightNode);
+        
+        return root.data;
 
     }
 
-    isBinarySearchTree(){
-
+    //todo: use ranges
+    isBinarySearchTree(root: BSTNodeType = this.root){
+        if(root === null)
+            return false;
+        
     }
 
     deleteValue(value: number){
