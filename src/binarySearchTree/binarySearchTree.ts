@@ -10,6 +10,12 @@ export class BSTnode {
     }
 }
 
+type NodeConstraintType = {
+    node: BSTNodeType;
+    lowConstraint: number;
+    highConstraint: number
+}
+
 /**
  * BINARY SEARCH TREE
  */
@@ -120,25 +126,45 @@ export class BinarySearchTree {
 
     }
 
-    //todo: use ranges
+    // - determines if binary tree is a BST, return bool
     isBinarySearchTree(root: BSTNodeType = this.root){
-        if(root === null)
-            return false;
+        let queue: NodeConstraintType[] = [];
+
+        queue.push({ node: root, lowConstraint: -Infinity, highConstraint: Infinity })
+
+        while(queue.length > 0){
+            let front = queue.shift();
+
+             if(front?.node === null || front?.node === undefined){
+                 return true;
+
+             } else {
+             
+                if(!(front.lowConstraint <= front.node.data) || !(front.highConstraint >= front.node.data))
+                    return false;
+
+                queue.push({node: front.node.leftNode, lowConstraint: front.lowConstraint, highConstraint: front.highConstraint})
+                queue.push({node: front.node.rightNode, lowConstraint: front.lowConstraint, highConstraint: front.highConstraint})
+
+            }
+
+        }
+        
+        return true;
         
     }
 
     deleteValue(value: number){
+        //check if a leaf, has 1 child, or has 2 children
+        if(this.root === null)
+            return -1;
 
     }
 
     // - returns next-highest value in tree after given value, -1 if none
-    getSuccessor(value: number){
-
-    }
+    getSuccessor(value: number){}
 
     // - returns previous-highest value in tree before given value, -1 if none
-    getPredecessor(value: number){
-
-    }
+    getPredecessor(value: number){}
 
 }
