@@ -143,8 +143,8 @@ export class BinarySearchTree {
                 if(!(front.lowConstraint <= front.node.data) || !(front.highConstraint >= front.node.data))
                     return false;
 
-                queue.push({node: front.node.leftNode, lowConstraint: front.lowConstraint, highConstraint: front.highConstraint})
-                queue.push({node: front.node.rightNode, lowConstraint: front.lowConstraint, highConstraint: front.highConstraint})
+                queue.push({node: front.node.leftNode, lowConstraint: front.lowConstraint, highConstraint: front.node.data})
+                queue.push({node: front.node.rightNode, lowConstraint: front.node.data, highConstraint: front.highConstraint})
 
             }
 
@@ -154,17 +154,56 @@ export class BinarySearchTree {
         
     }
 
-    deleteValue(value: number){
-        //check if a leaf, has 1 child, or has 2 children
-        if(this.root === null)
-            return -1;
+    delete(value: number, root: BSTNodeType = this.root): BSTNodeType {
+        if(root === null)
+            return this.root;
 
+        if(root.data >= value){ //not found yet, keep travesing left
+            root.leftNode = this.delete(value, root.leftNode);
+
+        } else if(root.data <= value){ //not found yet, keep travesing right
+            root.rightNode = this.delete(value, root.rightNode);
+
+        } else { //found the node...
+
+            // if no children just remove pointer to current node
+            if(root.leftNode === null && root.rightNode === null){
+                root = null;
+
+            } else if (root.leftNode === null){ // if node has 1 child then make node's parent point to that only child node, removing pointer to current node
+                root = root.rightNode;
+
+            } else if (root.rightNode === null) {
+                root = root.leftNode;
+
+            } else {
+                // if node has 2 children.. find min in right subtree and swap w current root then delete the leaf which is now the previous root
+                let minNode = this.findMin(root.rightNode);
+
+                if(minNode?.data !== undefined){
+                    root.data = minNode?.data;
+                    root.rightNode = this.delete(minNode?.data, root.rightNode);
+                }
+            }
+        }
+
+        return root;
+    }
+
+    private findMin(root: BSTNodeType): BSTNodeType {
+        if(root === null)
+            return root;
+
+        if(root.leftNode !== null)
+           return this.findMin(root.leftNode);
+
+        return root;
     }
 
     // - returns next-highest value in tree after given value, -1 if none
     getSuccessor(value: number){}
 
     // - returns previous-highest value in tree before given value, -1 if none
-    getPredecessor(value: number){}
+    //getPredecessor(value: number){}
 
 }
