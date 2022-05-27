@@ -1,5 +1,11 @@
 type BSTNodeType = BSTnode | null;
 
+type NodeConstraintType = {
+    node: BSTNodeType;
+    lowConstraint: number;
+    highConstraint: number
+}
+
 export class BSTnode {
     data: number;
     leftNode: BSTNodeType = null;
@@ -8,12 +14,6 @@ export class BSTnode {
     constructor(data: number){
         this.data = data;
     }
-}
-
-type NodeConstraintType = {
-    node: BSTNodeType;
-    lowConstraint: number;
-    highConstraint: number
 }
 
 /**
@@ -156,7 +156,7 @@ export class BinarySearchTree {
 
     delete(value: number, root: BSTNodeType = this.root): BSTNodeType {
         if(root === null)
-            return this.root;
+            return root;
 
         if(root.data >= value){ //not found yet, keep travesing left
             root.leftNode = this.delete(value, root.leftNode);
@@ -190,6 +190,39 @@ export class BinarySearchTree {
         return root;
     }
 
+    // - returns next-highest value in tree after given value
+    getSuccessor(value: number, root: BSTNodeType = this.root): BSTNodeType | undefined {
+        //returns a pointer to node w/ specified value -> O(h) 
+        let currNode = this.find(root, value);
+
+        if (currNode === null)
+            return null;
+
+        //case 1: node has a right subtree -> find min in right subtree
+        if(currNode.rightNode !== null){
+            return this.findMin(currNode.rightNode); // O(h)
+        } else {
+            //case 2: node doesn't have a right subtree ->  go to nearest ancestor, for which given node would be in left subtree
+            let successor = null;
+            let ancestor = root;
+
+            while(ancestor !== currNode){
+                if(ancestor?.data !== undefined)
+                    if(currNode.data < ancestor?.data){
+                        successor = ancestor;
+                        ancestor = ancestor.leftNode; // check to see of you can find a deeper node with this property
+                    } else {
+                        ancestor = ancestor.rightNode;
+                    }
+
+            }
+
+            return successor; // not all nodes have a successor (e.g. max node)
+
+        }
+         
+    }
+    
     private findMin(root: BSTNodeType): BSTNodeType {
         if(root === null)
             return root;
@@ -200,10 +233,23 @@ export class BinarySearchTree {
         return root;
     }
 
-    // - returns next-highest value in tree after given value, -1 if none
-    getSuccessor(value: number){}
+    private find(root: BSTNodeType, data: number): BSTNodeType {
+        if(root === null)
+            return null;
 
-    // - returns previous-highest value in tree before given value, -1 if none
+        if(data === root.data)
+            return root;
+
+
+        if(data <= root.data){
+            return this.find(root.leftNode, data);
+        } else {
+            return this.find(root.rightNode, data);
+        }
+
+    }
+
+    // - returns previous-highest value in tree before given value
     //getPredecessor(value: number){}
 
 }
