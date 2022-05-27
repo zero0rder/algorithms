@@ -158,10 +158,10 @@ export class BinarySearchTree {
         if(root === null)
             return root;
 
-        if(root.data >= value){ //not found yet, keep travesing left
+        if(root.data > value){ //not found yet, keep travesing left
             root.leftNode = this.delete(value, root.leftNode);
 
-        } else if(root.data <= value){ //not found yet, keep travesing right
+        } else if(root.data < value){ //not found yet, keep travesing right
             root.rightNode = this.delete(value, root.rightNode);
 
         } else { //found the node...
@@ -249,6 +249,7 @@ export class BinarySearchTree {
 
     }
 
+    //todo
     // - returns previous-highest value in tree before given value
     //getPredecessor(value: number){}
 
