@@ -4,7 +4,7 @@ export class MaxHeap {
     maxSize: number;
 
     constructor(h: number[] = [], max: number = 12){
-        this.heap = h;
+        this.heap = this.heapify(h);
         this.heapSize = h.length;
         this.maxSize = h.length > max ? h.length : max;
     }
@@ -14,9 +14,8 @@ export class MaxHeap {
             return console.log('full heap :(');
 
         this.heapSize++;
-        this.heap[this.heapSize] = value;
-        this.siftUp(this.heapSize);
-
+        this.heap[this.heapSize - 1] = value;
+        this.siftUp(this.heapSize - 1);
     }
 
     siftUp(index: number): void {
@@ -28,9 +27,9 @@ export class MaxHeap {
 
     siftDown(index: number): void {
         let heap = this.heap;
+        let maxIndex = index;
         let left = this.getLeftChild(index);
         let right = this.getRightChild(index);
-        let maxIndex = index;
 
         if(left <= this.heapSize && heap[left] > heap[maxIndex])
             maxIndex = left;
@@ -58,17 +57,19 @@ export class MaxHeap {
     }
 
     // - returns the max item, removing it
-    extractMax(){
+    extractMax(): number {
         let result = this.heap[0];
-        this.swap(this.heap, result, this.heap[this.heapSize]);
-        this.heapSize--;
-        this.siftDown(0);
-        return result;
 
+        this.swap(this.heap, 0, (this.heapSize - 1));
+        this.heapSize--;
+        this.heap.length = this.heapSize; // remove the last leaf
+        this.siftDown(0);
+
+        return result;
     }
 
     // - removes item at index
-    remove(index: number){
+    remove(index: number): void {
         this.heap[index] = Infinity;
         this.siftUp(index);
         this.extractMax();
@@ -76,18 +77,31 @@ export class MaxHeap {
 
     // - create heap from given array items
     heapify(a: number[]): number[]{
+        this.heap = a;
         this.heapSize = a.length;
-
-        // '(a.length / 2 - 1)' => index of last non-leaf node
+        
+        // - loop indexes of non-leaf nodes (half of the array are leaves)
         for(let i = Math.floor((a.length / 2) - 1); i >= 0; i--)
             this.siftDown(i);
 
-        return this.heap = a;
+        return this.heap;
     }
 
-    // - take an unsorted array and turn it into a sorted array in-place using a max heap
-    heapSort(){
+    // - take an unsorted array and turn it into a sorted array in-place using a max heap -> O(n log n)
+    //todo: fix 'in-place' impl. -> when siftDown, the array isn't decreasing in size (n-1) which causes issues at a certain point
+    heapSort(a: number[] = this.heap){
+        let temp = [];
 
+        if(!(this.heapSize > 0))
+            this.heapify(a);
+        
+        for(let i = a.length - 1; i >= 0; i--){
+            temp.unshift(this.extractMax());
+            //  this.swap(a, 0, i);
+            //  this.siftDown(0);
+        }
+
+        return temp;
     }
 
     private getParent(i: number): number {
