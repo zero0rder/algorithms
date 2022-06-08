@@ -25,11 +25,14 @@ export class MaxHeap {
         }
     }
 
-    siftDown(index: number): void {
+    siftDown(index: number, checkPt: number = Infinity): void {
         let heap = this.heap;
         let maxIndex = index;
         let left = this.getLeftChild(index);
         let right = this.getRightChild(index);
+
+        if(left >= checkPt || right >= checkPt)
+            return;
 
         if(left <= this.heapSize && heap[left] > heap[maxIndex])
             maxIndex = left;
@@ -39,13 +42,13 @@ export class MaxHeap {
 
         if(index !== maxIndex){
             this.swap(heap, index, maxIndex);
-            this.siftDown(maxIndex);
+            this.siftDown(maxIndex, checkPt);
         }
     }
 
     // - return max value in heap
     getMax(): number {
-        if(this.heapSize > 0)
+        if(!this.isEmpty())
             return this.heap[0];
 
         return -1;
@@ -81,27 +84,24 @@ export class MaxHeap {
         this.heapSize = a.length;
         
         // - loop indexes of non-leaf nodes (half of the array are leaves)
-        for(let i = Math.floor((a.length / 2) - 1); i >= 0; i--)
+        for(let i = Math.floor((this.heapSize / 2) - 1); i >= 0; i--)
             this.siftDown(i);
 
         return this.heap;
     }
 
     // - take an unsorted array and turn it into a sorted array in-place using a max heap -> O(n log n)
-    //todo: fix 'in-place' impl. -> when siftDown, the array isn't decreasing in size (n-1) which causes issues at a certain point
     heapSort(a: number[] = this.heap){
-        let temp = [];
+        let len = a.length - 1;
 
-        if(!(this.heapSize > 0))
+        if(this.isEmpty())
             this.heapify(a);
         
-        for(let i = a.length - 1; i >= 0; i--){
-            temp.unshift(this.extractMax());
-            //  this.swap(a, 0, i);
-            //  this.siftDown(0);
+        for(let i = len; i >= 0; i--){
+            this.swap(a, 0, i);
+            this.siftDown(0, i); //todo: fix issue with i=0 swap
         }
 
-        return temp;
     }
 
     private getParent(i: number): number {
