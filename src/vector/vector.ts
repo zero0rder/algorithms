@@ -141,7 +141,7 @@ export class Vector {
     private checkMinCapacity(): void {
         let allocationPercent = parseFloat((this.arr_size / this.arr_capacity).toFixed(2));
         if(allocationPercent < 0.25)
-            this.resize(Math.floor(this.arr_capacity / 2));
+            this.resize(~~(this.arr_capacity / 2));
         
     }
 };

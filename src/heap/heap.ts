@@ -84,7 +84,7 @@ export class MaxHeap {
         this.heapSize = a.length;
         
         // - loop indexes of non-leaf nodes (half of the array are leaves)
-        for(let i = Math.floor((this.heapSize / 2) - 1); i >= 0; i--)
+        for(let i = ~~((this.heapSize / 2) - 1); i >= 0; i--)
             this.siftDown(i);
 
         return this.heap;
@@ -105,7 +105,7 @@ export class MaxHeap {
     }
 
     private getParent(i: number): number {
-        return Math.floor((i - 1) / 2);
+        return ~~((i - 1) / 2);
     }
 
     private getLeftChild(i: number): number {

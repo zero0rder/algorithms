@@ -78,7 +78,7 @@ export class HashTable {
     private checkLoadFactor(){ 
         let loadFactor = parseFloat((this.table_size / this.table.length).toFixed(2));
         if(loadFactor >= 0.6)
-            this.resizeTable(Math.floor(this.table.length * 2));
+            this.resizeTable(~~(this.table.length * 2));
         
     }
 
