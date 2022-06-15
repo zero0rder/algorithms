@@ -1,3 +1,7 @@
+/**
+ *  MAX HEAP: T = O(log(n)), S = O(n) -- HEAP SORT: T = O(n log(n)), S = O(1)
+ */
+
 export class MaxHeap {
     heap: number[];
     heapSize: number;

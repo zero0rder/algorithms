@@ -1,5 +1,5 @@
 /**
- *  SELECTIONSORT  T = O(n^2), S = O(n)
+ *  SELECTIONSORT: T = O(n^2), S = O(n)
  */
 
 export const selectionsort = (a: number[]): number[] => {

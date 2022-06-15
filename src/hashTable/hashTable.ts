@@ -1,3 +1,7 @@
+/**
+ *  HASH TABLE: T = O(1), S = O(n)
+ */
+
 type HashNode = {
     key: string;
     value: number | null;

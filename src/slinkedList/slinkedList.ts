@@ -1,3 +1,7 @@
+/**
+ *  LINKED LIST: T = O(n) [search] - O(1)[front/back ops], S = O(n)
+ */
+
 type NodePtr = ListNode | null;
 
 export class ListNode {

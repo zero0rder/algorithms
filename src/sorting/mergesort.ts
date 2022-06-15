@@ -1,5 +1,5 @@
 /**
- *  MERGESORT  T = O(n log(n)), S = O(n)
+ *  MERGESORT:  T = O(n log(n)), S = O(n)
  */
 
 export const merge = (left: (number | undefined)[], right: (number | undefined)[]) : (number | undefined)[] => {
@@ -8,9 +8,9 @@ export const merge = (left: (number | undefined)[], right: (number | undefined)[
     while(left.length && right.length){
         if(left[0] && right[0])
             if(left[0] < right[0]){
-                auxArr.push(left.shift())
+                auxArr.push(left.shift());
             } else {
-                auxArr.push(right.shift())
+                auxArr.push(right.shift());
             }
     }
 

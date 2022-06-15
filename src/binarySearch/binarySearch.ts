@@ -1,3 +1,7 @@
+/**
+ *  BINARY SEARCH: T = O(log(n)), S = O(n)
+ */
+
 export const binarySearchRecurse = function(arr: number[], target: number, min: number = 0, max: number = arr.length - 1){
     let mid = ~~((min + max) / 2)
     
