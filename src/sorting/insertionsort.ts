@@ -1,5 +1,5 @@
 /**
- *  INSERTIONSORT:  T = O(n^2)
+ *  INSERTIONSORT:  T = O(n^2), S = O(1)
  */
 
 export const insertionsort = (a: number[]): number[] => {
@@ -18,7 +18,6 @@ export const insertionsort = (a: number[]): number[] => {
         a[j+1] = key;
 
     }
-
 
     return a;
 
