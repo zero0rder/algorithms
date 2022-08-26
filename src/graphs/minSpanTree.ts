@@ -21,20 +21,20 @@ export function primsMST(g: number[][], source: number){
     //find shortest path for all vertices
     for (let j = 0; j < length; j++) {
 
-        // Pick the minimum distance vertex from the set of vertices not yet
+        // Select the minimum distance vertex from the set of vertices not yet
         // processed inTree. 'u' is always equal to source in first iteration.
         let u = minDistance(distance, inTree);
 
-        // Mark the picked vertex as processed
+        // Mark the selected vertex as processed
         inTree[u] = true;
 
-        // Update distance value of the adjacent vertices of the picked vertex.
-        for (let k = 0; k < length; k++) {
-            // Update distance[k] only if is not in inTree, there is an edge from u to k, and distance of path
-            // from current vertex to k is smaller than it's current recorded value of distance[k]
-            if (!inTree[k] && g[u][k] !== 0 && distance[u] !== Infinity && g[u][k] < distance[k]) {
-                distance[k] = g[u][k];
-                parent[k] = u;
+        // Update distance value of the adjacent vertices of the selected vertex.
+        for (let v = 0; v < length; v++) {
+            // Update distance[v] only if not within inTree, plus there is an edge from u to v, and distance
+            // from current vertex to v is smaller than it's current recorded value of distance[v]
+            if (!inTree[v] && g[u][v] !== 0 && distance[u] !== Infinity && g[u][v] < distance[v]) {
+                distance[v] = g[u][v];
+                parent[v] = u;
             }
         }
     }
