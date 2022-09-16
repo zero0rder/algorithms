@@ -16,7 +16,6 @@ export class ListNode {
 export class List {
     head: NodePtr = null;
     list_size: number = 0;
-    //tail: NodePtr = null;
 
     constructor(){}
 
