@@ -4,12 +4,11 @@
 
  export class MaxHeap {
     heap: number[];
-    heapSize: number;
+    heapSize: number = 0;
     maxSize: number;
 
     constructor(h: number[] = [], max: number = 12){
         this.heap = this.heapify(h);
-        this.heapSize = h.length;
         this.maxSize = h.length > max ? h.length : max;
     }
 
