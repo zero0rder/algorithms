@@ -34,14 +34,11 @@ export class List {
         let currNode = this.head;
         let nodeIndex = 0;
 
-        if(index < 0 || index > this.list_size)
-            return console.log('out of bounds');
+        if(index < 0 || index > this.list_size) return console.log('out of bounds');
 
         //start at head & traverse down
         while(currNode){
-            if(nodeIndex === index)
-                return currNode.data;
-            
+            if(nodeIndex === index) return currNode.data;
             currNode = currNode.next_ptr;
             nodeIndex++;
         }
@@ -66,8 +63,7 @@ export class List {
 
     // - remove front item and return its value
     pop_front(){
-        if(this.head === null)
-           return console.log('empty list.');
+        if(this.head === null) return console.log('empty list.');
 
         let data = this.head.data;
         this.head = this.head.next_ptr;
@@ -103,19 +99,16 @@ export class List {
     pop_back(){
         let currNode = this.head;
         
-        if(currNode === null)
-            return console.log('empty list.')
+        if(currNode === null) return console.log('empty list.')
 
         //iterate until next_ptr.next_ptr == null (second-to-last)
-        while(currNode.next_ptr?.next_ptr)
+        while(currNode.next_ptr?.next_ptr){
             currNode = currNode.next_ptr;
+        }
 
         //currently on second-to-last node
         let prev_tail = currNode.next_ptr?.data;
-
-        if(currNode)
-            currNode.next_ptr = null;
-
+        if(currNode) currNode.next_ptr = null;
         this.list_size--;
 
         return prev_tail;
@@ -142,10 +135,7 @@ export class List {
         let newNode = new ListNode(value);
         let currNode = this.head;
         
-        if(index < 0 || index > this.list_size)
-            return console.log('out of bounds');
-
-        
+        if(index < 0 || index > this.list_size) return console.log('out of bounds');
         if(index === 0){
             if(currNode === null){
                 this.head === newNode;
@@ -179,31 +169,19 @@ export class List {
     // - removes node at given index and returns node
     erase(index: number){
         let currNode = this.head;
+        let nodeIdx = 0;
 
-        if (index === 0){
-            if(currNode !== null){
-                if(currNode.next_ptr !== null)
-                   return this.head = currNode.next_ptr;
-
-                
-                return this.head = null;
+        if(currNode === null || index === 0) return currNode;
+        
+        while(currNode?.next_ptr){
+            if(index === (nodeIdx + 1)){
+                const temp: ListNode = currNode.next_ptr;
+                currNode.next_ptr = temp.next_ptr;
+                return temp;
             }
 
-        } else {
-            let nodeIdx = 0;
-
-            while(currNode?.next_ptr){
-
-                if(index === (nodeIdx + 1)){
-                    let temp = currNode.next_ptr;
-                    currNode.next_ptr = currNode.next_ptr.next_ptr;
-
-                    return temp;
-                }
-
-                currNode = currNode.next_ptr;
-                nodeIdx++;
-            }
+            currNode = currNode.next_ptr;
+            nodeIdx++;
         }
 
         this.list_size !== 0 ? this.list_size-- : this.list_size;
@@ -213,11 +191,8 @@ export class List {
     value_n_from_end(n: number){
         let currNode = this.head;
 
-        if(n >= this.list_size)
-            return console.log('out of bounds');
-
-        if(this.head === null)
-            return null;
+        if(n > this.list_size) return console.log('out of bounds');
+        if(this.head === null) return null;
 
         if(n === 0){
             while(currNode?.next_ptr){
@@ -248,9 +223,7 @@ export class List {
         let forward = this.head;
 
         while(curr !== null){
-            if(forward)
-                forward = forward.next_ptr;
-
+            if(forward) forward = forward.next_ptr;
             curr.next_ptr = prev;
             prev = curr;
             curr = forward;
