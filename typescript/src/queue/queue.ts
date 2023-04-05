@@ -4,7 +4,7 @@ export class QueueNode {
     data: number;
     next: NodePtr = null;
 
-    constructor(data: number = 0) {
+    constructor(data: number = 0){
         this.data = data;
     }
 }

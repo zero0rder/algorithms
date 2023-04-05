@@ -220,10 +220,9 @@ export class List {
     reverse(){
         let prev = null;
         let curr = this.head;
-        let forward = this.head;
 
-        while(curr !== null){
-            if(forward) forward = forward.next_ptr;
+        while(curr){
+            let forward = curr.next_ptr;
             curr.next_ptr = prev;
             prev = curr;
             curr = forward;
@@ -231,4 +230,14 @@ export class List {
 
         return prev;
     }
+
+    // findMid(head:ListNode|null){
+    //     let slow = head, fast = head
+    //     while(fast && fast.next_ptr){
+    //         slow = slow?.next_ptr
+    //         fast = fast.next_ptr.next_ptr
+    //     }
+    
+    //     return slow
+    // }
 }

@@ -4,11 +4,11 @@
 
 export const quickSortRecursive = (a: number[], lower: number = 0, upper: number = a.length - 1): void => {
     if(lower >= upper)
-        return;
+        return
 
-    let pivot = partition(a, lower, upper);
-    quickSortRecursive(a, lower, pivot - 1);
-    quickSortRecursive(a, pivot + 1, upper);
+    let pivot = partition(a, lower, upper)
+    quickSortRecursive(a, lower, pivot - 1)
+    quickSortRecursive(a, pivot + 1, upper)
 }
 
 export const quicksortIterative = (a: number[]) => {
@@ -18,6 +18,7 @@ export const quicksortIterative = (a: number[]) => {
     stack.push(0);
     stack.push(a.length - 1);
 
+    // => "stack[stack.length - 1]" is reading/returning the topmost element in the stack w/o removing it...
     while(stack[stack.length - 1] >= 0){
         //extract topmost subarray
         let end = stack.pop(), start = stack.pop(), pivot = partition(a, start ?? 0, end ?? (a.length - 1));
@@ -43,9 +44,10 @@ export const quicksortIterative = (a: number[]) => {
 }
 
 const partition = (a: number[], lower: number, upper: number): number => {
-    let p = upper, k = lower - 1;
-    //p = ~~(Math.random() * (upper - lower))
+    let p = upper, k = lower - 1
+    // console.log({p, lower, upper})
 
+    // randomInt(lower, upper)
     for(let j = lower; j <= upper; j++){
         if(a[j] < a[p]){
             k++;

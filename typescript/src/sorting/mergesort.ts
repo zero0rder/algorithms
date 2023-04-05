@@ -21,5 +21,8 @@ export const mergesort = (arr: number[]): (number | undefined)[] => {
     if(arr.length <= 1)
         return arr;
     
-    return merge(mergesort(arr.splice(0, ~~(arr.length / 2))), mergesort(arr));
+    return merge(
+        mergesort(arr.splice(0, ~~(arr.length / 2))), 
+        mergesort(arr)
+    );
 }

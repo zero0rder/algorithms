@@ -21,7 +21,6 @@ export function dijkstra(g: number[][], source: number): void {
 
     //find shortest path for all vertices
     for (let j = 0; j < length; j++) {
-
         // Select the minimum distance vertex from the set of vertices not yet
         // processed inTree. 'u' is always equal to source in first iteration.
         let u = minDistance(distance, inTree);

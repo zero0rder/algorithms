@@ -50,7 +50,7 @@ export class HashTable {
 
     // - check if a specific key exists
     exists(key: string){
-        let target = this.hash(key);
+        const target = this.hash(key);
         return this.table[target].key !== '<empty>' && this.table[target].key !== '<tombstone>';
     }
 
@@ -62,10 +62,9 @@ export class HashTable {
             while(this.table[index].key !== '<empty>' && this.table[index].key !== '<tombstone>'){
                 index++;
             }
-
-            //todo: need ptr to visit every slot guaranteed
+            
             if(this.table[index] === undefined)
-                return 'not available';
+                return null;
         }
 
         return this.table[index].value;
@@ -73,23 +72,22 @@ export class HashTable {
 
     // - remove key/value pair from the table
     remove(key: string){
-        let index = this.hash(key);
+        const index = this.hash(key);
         this.table[index] = { key: '<tombstone>', value: null };
         this.table_size--;
     }
     
     //if load factor >= 0.6% double the size of table
     private checkLoadFactor(){ 
-        let loadFactor = parseFloat((this.table_size / this.table.length).toFixed(2));
+        const loadFactor = parseFloat((this.table_size / this.table.length).toFixed(2));
         if(loadFactor >= 0.6)
             this.resizeTable(~~(this.table.length * 2));
         
     }
 
     private resizeTable(size: number){
-        let temp = new Array(size).fill({ key: '<empty>', value: null });
+        const temp = new Array(size).fill({ key: '<empty>', value: null });
 
-        //todo: some keys don't exist() or get() values
         for(let i = 0; i <= this.table.length - 1; i++){
             if(this.table[i].key !== '<empty>' && this.table[i].key !== '<tombstone>')
                 temp[i] = this.table[i];

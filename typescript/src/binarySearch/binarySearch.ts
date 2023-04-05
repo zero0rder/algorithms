@@ -2,20 +2,20 @@
  *  BINARY SEARCH: T = O(log(n)), S = O(n)
  */
 
-export const binarySearchRecurse = function(arr: number[], target: number, min: number = 0, max: number = arr.length - 1){
-    let mid = ~~((min + max) / 2)
-    
+export const binarySearchRecurse = function(arr: number[], target: number, min: number = 0, max: number = arr.length - 1): number | undefined {
     if(min > max)
-        return console.log('not found')
+        return -1
+    
+    let mid = ~~((min + max) / 2)
 
     if(arr[mid] === target)
-        return console.log(`found at index ${mid}`)
+        return mid
 
     if(arr[mid] > target)
-        binarySearchRecurse(arr, target, min, mid - 1)
+        return binarySearchRecurse(arr, target, min, mid - 1)
 
     if(arr[mid] < target)
-        binarySearchRecurse(arr, target, mid + 1, max)
+        return binarySearchRecurse(arr, target, mid + 1, max)
     
 }
 
